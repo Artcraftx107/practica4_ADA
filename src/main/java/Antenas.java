@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Antenas {
@@ -12,9 +13,17 @@ public class Antenas {
 	}
 	
 	public List<Integer> situarAntenas(){
-		
-		//****Completar Implementación *****
+		List<Integer> antenas = new ArrayList<>();
+		int i = 0;
+
+		while(i < puntosKm.length){
+			int ubicacionAntena = puntosKm[i] + cobertura;
+			antenas.add(ubicacionAntena);
+
+			while(i < puntosKm.length && puntosKm[i] <= ubicacionAntena + cobertura){
+				i++;
+			}
+		}
+		return antenas;
 	}
-	
-	
 }

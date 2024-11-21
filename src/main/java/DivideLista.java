@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -14,8 +16,19 @@ public class DivideLista {
 	 * 
 	 */
 	public static int resolverVoraz(int []datos, int k, List<Integer> a, List<Integer> b) {
+		List<Integer> lista = new ArrayList<>();
+		for(int num : datos){
+			lista.add(num);
+		}
 
-		//******Completar la implementación*******
+		Collections.sort(lista, Collections.reverseOrder());
+
+		b.addAll(lista.subList(0, k));
+		a.addAll(lista.subList(k, lista.size()));
+
+		int sumaB = b.stream().mapToInt(Integer::intValue).sum();
+		int sumaA = a.stream().mapToInt(Integer::intValue).sum();
+
+		return sumaB - sumaA;
 	}
-	
 }
