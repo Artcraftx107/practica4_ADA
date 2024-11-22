@@ -11,31 +11,42 @@ public class Cobertura {
 
 	public Set<Integer> getConjuntoCobertura() {
 		Set<Integer> cobertura = new HashSet<>();
-		boolean[] nodoEnCobertura = new boolean[grafo.nodos().size()];
-		int aristasCubiertas = 0;
+		Set<String> aristasCubiertas = new HashSet<>();
 
-		while(aristasCubiertas < grafo.numAristas()){
-			int maxGrado = -1;
+		Set<String> todasLasAristas = new HashSet<>();
+		for(int nodo : grafo.nodos()){
+			for(int vecino : grafo.sucesores(nodo)){
+				String arista = Math.min(nodo, vecino) + "-" + Math.max(nodo, vecino);
+				todasLasAristas.add(arista);
+			}
+		}
+		while (aristasCubiertas.size() < todasLasAristas.size()) {
 			int nodoSeleccionado = -1;
+			int maxAristasSinCubrir = -1;
 
-			for(int nodo : grafo.nodos()){
-				if(!nodoEnCobertura[nodo]){
-					int grado = grafo.grado(nodo);
-					if(grado > maxGrado){
-						maxGrado = grado;
-						nodoSeleccionado = nodo;
+			for (int nodo : grafo.nodos()) {
+				int aristasSinCubrir = 0;
+
+				for (int vecino : grafo.sucesores(nodo)) {
+					String arista = Math.min(nodo, vecino) + "-" + Math.max(nodo, vecino);
+					if (!aristasCubiertas.contains(arista)) {
+						aristasSinCubrir++;
 					}
+				}
+
+				if (aristasSinCubrir > maxAristasSinCubrir) {
+					maxAristasSinCubrir = aristasSinCubrir;
+					nodoSeleccionado = nodo;
 				}
 			}
 
 			cobertura.add(nodoSeleccionado);
-			nodoEnCobertura[nodoSeleccionado] = true;
 
-			for(int vecino : grafo.sucesores(nodoSeleccionado)){
-				aristasCubiertas++;
+			for (int vecino : grafo.sucesores(nodoSeleccionado)) {
+				String arista = Math.min(nodoSeleccionado, vecino) + "-" + Math.max(nodoSeleccionado, vecino);
+				aristasCubiertas.add(arista);
 			}
 		}
-
 		return cobertura;
 	}
 }
